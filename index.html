@@ -12,10 +12,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; /* Changed to min-height for scrolling */
             margin: 0;
             text-align: center;
             transition: background-color 1s ease;
+            padding: 20px 0; /* Add padding for small screens */
         }
 
         .container {
@@ -23,13 +24,13 @@
             padding: 40px;
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 400px;
+            max-width: 450px;
             width: 90%;
         }
 
         h1 {
             color: #ff6b6b;
-            font-size: 2.2em; /* Slightly smaller to fit names */
+            font-size: 2.2em;
             margin-bottom: 10px;
         }
 
@@ -41,41 +42,68 @@
 
         .btn {
             padding: 12px 25px;
-            margin: 10px;
+            margin: 8px;
             border: none;
             border-radius: 50px;
             font-size: 1em;
             cursor: pointer;
             transition: transform 0.2s;
+            font-weight: bold;
         }
 
         .btn:hover {
             transform: scale(1.05);
         }
 
-        #smileBtn {
-            background-color: #4ecdc4;
-            color: white;
-        }
-
-        #forgiveBtn {
-            background-color: #ff6b6b;
-            color: white;
-        }
+        #smileBtn { background-color: #4ecdc4; color: white; }
+        #forgiveBtn { background-color: #ff6b6b; color: white; }
+        #sendBtn { background-color: #333; color: white; width: 100%; margin: 10px 0;}
 
         #messageArea {
-            margin-top: 20px;
+            margin: 20px 0;
             font-weight: bold;
-            color: #333;
-            min-height: 30px;
+            color: #4ecdc4;
+            min-height: 50px;
+            font-size: 1.1em;
         }
 
-        /* Animation for emojis */
+        /* Styles for the text box */
+        .feedback-section {
+            margin-top: 30px;
+            border-top: 2px dashed #eee;
+            padding-top: 20px;
+            text-align: left;
+        }
+
+        .feedback-section h3 {
+            font-size: 1em;
+            color: #888;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            box-sizing: border-box; /* Keeps padding inside width */
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-family: inherit;
+            resize: none;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #4ecdc4;
+        }
+
         .emoji {
             position: absolute;
             top: -50px;
             animation: fall 3s linear forwards;
             font-size: 2em;
+            pointer-events: none; /* Let clicks pass through emojis */
         }
 
         @keyframes fall {
@@ -89,54 +117,115 @@
         <h1 id="headerText">I'm Sorry! 😔</h1>
         <p id="mainText">I messed up and I feel terrible about it. You mean a lot to me. Can we make up?</p>
 
-        <div id="messageArea"></div>
+        <div id="messageArea">Click "Make me smile" for a joke!</div>
 
         <button id="smileBtn" class="btn" onclick="makeSmile()">Make me smile</button>
         <button id="forgiveBtn" class="btn" onclick="forgive()">I forgive you</button>
+
+        <div class="feedback-section" id="feedbackSection">
+            <h3>Tell me how you feel (I'll listen):</h3>
+            <textarea id="feelingsBox" placeholder="Type whatever you want to say to me here..."></textarea>
+            <button id="sendBtn" class="btn" onclick="sendEmail()">Send to me</button>
+        </div>
     </div>
 
     <script>
         // --- CONFIGURATION START ---
         
-        // 👇👇 CHANGE THIS TO HER NAME 👇👇
+        // 1. HER NAME
         const friendName = "Sony"; 
+        
+        // 2. YOUR EMAIL (This is where her message will go)
+        const yourEmail = "mani8309316076@gmail.com"; 
         
         // --- CONFIGURATION END ---
 
-        // Update the header immediately when the page loads
         document.getElementById('headerText').innerText = `I'm Sorry, ${friendName}! 😔`;
 
-        // List of sweet messages
+        // 40+ JOKES AND COMPLIMENTS
         const happyMessages = [
             `You have the best laugh, ${friendName}!`,
             "Why did the cookie go to the hospital? Because he felt crummy! 🍪",
             "You are smarter than Google.",
+            "What do you call a fake noodle? An impasta! 🍝",
             "Even my dog misses you.",
-            "Life is boring without our chats.",
-            "You're the pineapple to my pizza (wait, is that good? Yes!)"
+            "Why don't skeletons fight each other? They don't have the guts.",
+            "You're the pineapple to my pizza (wait, is that good? Yes!)",
+            "What do you call a bear with no teeth? A gummy bear! 🐻",
+            "I'd pause my favorite game for you.",
+            "Why did the scarecrow win an award? Because he was outstanding in his field!",
+            "You make the world 10x brighter.",
+            "What do you call a pony with a cough? A little horse.",
+            "If you were a fruit, you'd be a Fine-apple. 🍍",
+            "Did you hear about the restaurant on the moon? Great food, no atmosphere.",
+            "You're cooler than the other side of the pillow.",
+            "Why did the math book look sad? Because it had too many problems.",
+            "Your smile is my favorite notification.",
+            "What do you call a fish wearing a bowtie? Sofishticated. 🐟",
+            "Can February March? No, but April May!",
+            "You're more fun than a ball pit.",
+            "Why did the bicycle fall over? Because it was two-tired!",
+            "I bet you make babies smile.",
+            "What do you call cheese that isn't yours? Nacho cheese! 🧀",
+            "You have great taste in friends (eventually).",
+            "How does a penguin build its house? Igloos it together.",
+            "Why did the golfer bring two pairs of pants? In case he got a hole in one.",
+            "You are literally the best.",
+            "What do you call a pile of cats? A meowtain.",
+            "Why are elevator jokes so good? They work on so many levels.",
+            "You're a limited edition.",
+            "What do you call a factory that makes okay products? A satisfactory.",
+            "I promise to buy you food if you forgive me.",
+            "What did the janitor say when he jumped out of the closet? Supplies!",
+            "You light up every room you walk into.",
+            "Why couldn't the leopard play hide and seek? Because he was always spotted.",
+            "I miss your face.",
+            "What kind of shoes do ninjas wear? Sneakers.",
+            "You're my favorite person to annoy.",
+            "Why did the tomato turn red? Because it saw the salad dressing!",
+            "Being around you is the best therapy."
         ];
 
         function makeSmile() {
             const randomIndex = Math.floor(Math.random() * happyMessages.length);
             const message = happyMessages[randomIndex];
             document.getElementById('messageArea').innerText = message;
-            document.getElementById('messageArea').style.color = "#4ecdc4";
         }
 
         function forgive() {
             document.getElementById('headerText').innerText = `YAY! Thank you ${friendName}! ❤️`;
             document.getElementById('mainText').innerText = "I promise to be a better friend. Let's get food soon!";
             
+            // Hide buttons
             document.getElementById('smileBtn').style.display = 'none';
             document.getElementById('forgiveBtn').style.display = 'none';
+            
+            // Clear joke area
             document.getElementById('messageArea').innerText = "";
+            
+            // Change background
             document.body.style.backgroundColor = "#dff9fb";
             
             createConfetti();
         }
 
+        function sendEmail() {
+            const message = document.getElementById('feelingsBox').value;
+            if(message.trim() === "") {
+                alert("Please write something first.");
+                return;
+            }
+            
+            // This opens their default email client with your email and their message
+            const subject = `Message from ${friendName}`;
+            const body = encodeURIComponent(message);
+            window.location.href = `mailto:${yourEmail}?subject=${subject}&body=${body}`;
+            
+            alert("Opening your email app to send the message...");
+        }
+
         function createConfetti() {
-            for(let i=0; i<30; i++) {
+            for(let i=0; i<40; i++) {
                 setTimeout(() => {
                     const emoji = document.createElement('div');
                     emoji.classList.add('emoji');
