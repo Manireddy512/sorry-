@@ -29,7 +29,7 @@
 
         h1 {
             color: #ff6b6b;
-            font-size: 2.5em;
+            font-size: 2.2em; /* Slightly smaller to fit names */
             margin-bottom: 10px;
         }
 
@@ -70,7 +70,7 @@
             min-height: 30px;
         }
 
-        /* Simple animation for emojis */
+        /* Animation for emojis */
         .emoji {
             position: absolute;
             top: -50px;
@@ -96,11 +96,19 @@
     </div>
 
     <script>
-        // JavaScript: The logic behind the buttons
+        // --- CONFIGURATION START ---
+        
+        // 👇👇 CHANGE THIS TO HER NAME 👇👇
+        const friendName = "Sony"; 
+        
+        // --- CONFIGURATION END ---
 
-        // CUSTOMIZE YOUR MESSAGES HERE
+        // Update the header immediately when the page loads
+        document.getElementById('headerText').innerText = `I'm Sorry, ${friendName}! 😔`;
+
+        // List of sweet messages
         const happyMessages = [
-            "You have the best laugh!",
+            `You have the best laugh, ${friendName}!`,
             "Why did the cookie go to the hospital? Because he felt crummy! 🍪",
             "You are smarter than Google.",
             "Even my dog misses you.",
@@ -116,12 +124,14 @@
         }
 
         function forgive() {
-            document.getElementById('headerText').innerText = "YAY! Thank you! ❤️";
+            document.getElementById('headerText').innerText = `YAY! Thank you ${friendName}! ❤️`;
             document.getElementById('mainText').innerText = "I promise to be a better friend. Let's get food soon!";
+            
             document.getElementById('smileBtn').style.display = 'none';
             document.getElementById('forgiveBtn').style.display = 'none';
             document.getElementById('messageArea').innerText = "";
             document.body.style.backgroundColor = "#dff9fb";
+            
             createConfetti();
         }
 
